@@ -3,7 +3,7 @@
         "name": "Keven Leone",
         "email": "keven.santos.sz@gmail.com"
     },
-    "description": "OData Query Builder",
+    "description": "A lightweight and flexible TypeScript library for building OData filter queries.",
     "devDependencies": {
         "@types/bun": "latest"
     },
@@ -25,11 +25,14 @@
     "peerDependencies": {
         "typescript": "^5"
     },
-    "private": true,
-    "repository": "https://github.com/kevenleone/odata-search-builder",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kevenleone/odata-search-builder.git"
+    },
     "type": "module",
     "scripts": {
         "build": "bun build ./src/*.ts --outdir ./dist --target node --root ./src && tsc --emitDeclarationOnly --declaration --outDir ./dist ./src/index.ts"
     },
-    "version": "0.0.1"
+    "version": "1.0.0"
 }
