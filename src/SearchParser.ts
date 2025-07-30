@@ -1,6 +1,60 @@
 import { SearchBuilder } from "./SearchBuilder";
 
+/**
+ * SearchParser class provides functionality to parse OData filter expressions into SearchBuilder instances.
+ * This allows converting existing OData filter strings into SearchBuilder objects for manipulation.
+ *
+ * @example
+ * // Parse a simple filter
+ * const searchBuilder = SearchParser.parse("name eq 'John' and age gt 30");
+ *
+ * console.log(searchBuilder.build()); // name eq 'John' and age gt 30
+ *
+ * // Parse a complex filter with grouping
+ * const complexBuilder = SearchParser.parse("(firstName eq 'John' or firstName eq 'Jane') and age ge 25");
+ * // Now you can continue building on top of the parsed expression
+ * complexBuilder.and().contains('department', 'Sales').build();
+ *
+ * @author Keven Leone
+ */
 export class SearchParser {
+    /**
+     * Parses an OData filter expression into a SearchBuilder instance.
+     * This method converts a string OData filter query into a SearchBuilder object
+     * that can be further modified or executed.
+     *
+     * Supports parsing of:
+     * - Comparison operators (eq, ne, gt, ge, lt, le)
+     * - Logical operators (and, or, not)
+     * - Grouping with parentheses
+     * - String functions (contains, startswith, endswith)
+     * - The 'in' operator
+     *
+     * @param filter - The OData filter expression to parse (e.g., "name eq 'John' and age gt 18")
+     * @returns A SearchBuilder instance representing the parsed filter
+     * @throws Error if the filter syntax is invalid or contains unsupported operations
+     *
+     * @example
+     * // Parse a simple filter
+     * const builder = SearchParser.parse("name eq 'John' and age gt 18");
+     * console.log(builder.build()); // "name eq 'John' and age gt 18"
+     *
+     * @example
+     * // Parse a complex filter with grouping and functions
+     * const builder = SearchParser.parse("(status eq 'active' or status eq 'pending') and contains(name, 'Smith')");
+     * console.log(builder.build()); // "(status eq 'active' or status eq 'pending') and contains(name, 'Smith')"
+     *
+     * @example
+     * // Parse a filter and then modify it
+     * const builder = SearchParser.parse("category eq 'books'");
+     * builder.and().gt('price', 10);
+     * console.log(builder.build()); // "category eq 'books' and price gt 10"
+     *
+     * @example
+     * // Parse a filter with the 'in' operator
+     * const builder = SearchParser.parse("status in ('active', 'pending', 'review')");
+     * console.log(builder.build()); // "status in ('active', 'pending', 'review')"
+     */
     static parse(filter: string): SearchBuilder {
         const searchBuilder = new SearchBuilder();
         const tokens = this.tokenize(filter);
@@ -93,12 +147,6 @@ export class SearchParser {
         }
 
         return searchBuilder;
-    }
-
-    private static parseInList(raw: string): any[] {
-        const list = raw.trim().replace(/^\(/, "").replace(/\)$/, "");
-
-        return list.split(",").map((token) => this.parseValue(token.trim()));
     }
 
     private static parseValue(token: string): any {
