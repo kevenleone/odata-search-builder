@@ -1,0 +1,35 @@
+{
+    "author": {
+        "name": "Keven Leone",
+        "email": "keven.santos.sz@gmail.com"
+    },
+    "description": "OData Query Builder",
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "exports": {
+        ".": "./dist/index.js"
+    },
+    "files": [
+        "dist",
+        "LICENSE.md",
+        "README.md"
+    ],
+    "keywords": [
+        "odata",
+        "odata-filter",
+        "odata-query-builder"
+    ],
+    "module": "src/index.ts",
+    "name": "odata-search-builder",
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "private": true,
+    "repository": "https://github.com/kevenleone/odata-search-builder",
+    "type": "module",
+    "scripts": {
+        "build": "bun build ./src/*.ts --outdir ./dist --target node --root ./src && tsc --emitDeclarationOnly --declaration --outDir ./dist ./src/index.ts"
+    },
+    "version": "1.0.0"
+}
