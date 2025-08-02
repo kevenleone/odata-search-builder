@@ -233,7 +233,7 @@ export class SearchBuilder {
      *   .build();
      */
     public any(field: string, options: AnyOptions) {
-        return SearchBuilder.any(field, options);
+        return this.add(SearchBuilder.any(field, options));
     }
 
     /**
